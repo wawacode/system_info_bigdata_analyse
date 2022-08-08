@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.3.3/echarts.js"></script>
+</head>
+<body>
+<h1>20点cpu的峰值</h1>
+<div style="width:400px;height:400px" id="mydiv1"></div>
+<h1>21点cpu的峰值</h1>
+<div style="width:400px;height:400px" id="mydiv2"></div>
+<h1>22点cpu的峰值</h1>
+<div style="width:400px;height:400px" id="mydiv3"></div>
+<h1>23点cpu的峰值</h1>
+<div style="width:400px;height:400px" id="mydiv4"></div>
+<script>
+var chartDom = document.getElementById('mydiv1');
+var chartDom1 = document.getElementById('mydiv2');
+var chartDom2 = document.getElementById('mydiv3');
+var chartDom3 = document.getElementById('mydiv4');
+var myChart = echarts.init(chartDom);
+var myChart1= echarts.init(chartDom1);
+var myChart2= echarts.init(chartDom2);
+var myChart3= echarts.init(chartDom3);
+//由于成功以后改value值，ajax请求成功后改变表盘的值，数据采用GET方式
+$.get("/link",function(res){
+    //把option放在成功里，表示成功后加载数据
+    //前端打印console.log
+    console.log(res[0])
+    //通过结果res[0]是一个"{"，表示res是一个字符串
+    //前端把res转换成json
+    res=JSON.parse(res)
+    //由于res.result是一个列表，列表第一个元素是由两个元素组成的列表，两个元素中第二个元素是20点的cpu峰值
+    console.log(res.result[0][1])
+    option = {
+      tooltip: {
+        formatter: '{a} <br/>{b} : {c}%'
+      },
+      series: [
+        {
+          name: 'Pressure',
+          type: 'gauge',
+          progress: {
+            show: true
+          },
+          detail: {
+            valueAnimation: true,
+            formatter: '{value}'
+          },
+          data: [
+            {
+              value: res.result[0][1],
+              name: 'SCORE'
+            }
+          ]
+        }
+      ]
+    };
+    //复制option ，修改变量名option1
+    option1 = {
+      tooltip: {
+        formatter: '{a} <br/>{b} : {c}%'
+      },
+      series: [
+        {
+          name: 'Pressure',
+          type: 'gauge',
+          progress: {
+            show: true
+          },
+          detail: {
+            valueAnimation: true,
+            formatter: '{value}'
+          },
+          data: [
+            {
+              value: res.result[1][1],
+              name: 'SCORE'
+            }
+          ]
+        }
+      ]
+    };
+     //复制option ，修改变量名option2
+    option2 = {
+      tooltip: {
+        formatter: '{a} <br/>{b} : {c}%'
+      },
+      series: [
+        {
+          name: 'Pressure',
+          type: 'gauge',
+          progress: {
+            show: true
+          },
+          detail: {
+            valueAnimation: true,
+            formatter: '{value}'
+          },
+          data: [
+            {
+              value: res.result[2][1],
+              name: 'SCORE'
+            }
+          ]
+        }
+      ]
+    };
+     //复制option ，修改变量名option3
+    option3 = {
+      tooltip: {
+        formatter: '{a} <br/>{b} : {c}%'
+      },
+      series: [
+        {
+          name: 'Pressure',
+          type: 'gauge',
+          progress: {
+            show: true
+          },
+          detail: {
+            valueAnimation: true,
+            formatter: '{value}'
+          },
+          data: [
+            {
+              value: res.result[3][1],
+              name: 'SCORE'
+            }
+          ]
+        }
+      ]
+    };
+    //把option给图表
+    myChart.setOption(option);
+    myChart1.setOption(option1);
+    myChart2.setOption(option2);
+    myChart3.setOption(option3);
+})
+
+//myChart.setOption(option);
+</script>
+</body>
+</html>
